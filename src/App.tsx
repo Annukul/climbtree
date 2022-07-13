@@ -27,7 +27,7 @@ function App() {
       setLatitude(pos.coords.latitude);
     };
 
-    const id = navigator.geolocation.watchPosition(success, error, options);
+    navigator.geolocation.watchPosition(success, error, options);
   }, [longitude, latitude]);
 
   return (
@@ -38,6 +38,7 @@ function App() {
           <a
             href={`https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`}
             target="_blank"
+            rel="noreferrer"
           >
             Click here
           </a>
