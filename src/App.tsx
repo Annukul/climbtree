@@ -1,23 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
+  const [longitude, setLongitude] = useState<any>();
+  const [latitude, setLatitude] = useState<any>();
+  if (navigator.geolocation) {
+    console.log("Available");
+  } else {
+    console.log("Not Available");
+  }
+
+  useEffect(() => {
+    const error = (err: any) => {
+      console.warn("ERROR(" + err.code + "): " + err.message);
+    };
+
+    const options = {
+      enableHighAccuracy: false,
+      timeout: 15000,
+      maximumAge: 0,
+    };
+
+    const success = (pos: any) => {
+      console.log(pos.coords.latitude, pos.coords.longitude);
+      setLongitude(pos.coords.longitude);
+      setLatitude(pos.coords.latitude);
+    };
+
+    const id = navigator.geolocation.watchPosition(success, error, options);
+  }, [longitude, latitude]);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h2>ClimbTree</h2>
+        {longitude && latitude && (
+          <a
+            href={`https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`}
+            target="_blank"
+          >
+            Click here
+          </a>
+        )}
       </header>
     </div>
   );
